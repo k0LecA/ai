@@ -1,1 +1,8 @@
-a.out
+ai-example/animals/**/*.png
+ai-example/**/*.out
+ao-02/animals/**/*.png
+ao-2/animals/
+**/venv/
+*.out
+*.xml
+*.sumocfg
