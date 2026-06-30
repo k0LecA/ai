@@ -58,20 +58,15 @@ models_dir = Path("models")
 models_dir.mkdir(exist_ok=True)
 result_dir = Path("results")
 result_dir.mkdir(exist_ok=True)
-data_file = Path("normalized_data.csv")
-df = pd.read_csv(data_file)
 
 # Target variable
 target_column = "Performance_Category"
 class_names = ['Low', 'Medium', 'High']
 
-# Split the dataset into features and target variable
-X=df.drop(columns=[target_column,'Productivity_Score'])
-y=df[target_column]
-
-# Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=89)
-
+X_train = pd.read_csv('X_train.csv')
+X_test = pd.read_csv('X_test.csv')
+y_train = pd.read_csv('y_train.csv').squeeze()  # squeeze превращает однострочный DataFrame в Series
+y_test = pd.read_csv('y_test.csv').squeeze()
 
 
 ## Logistic Regression
@@ -153,7 +148,7 @@ plt.clf()
 dot_data = StringIO()
 export_graphviz(dec, out_file=dot_data,
                 filled=True, rounded=True,
-                special_characters=True, feature_names=X.columns, class_names=class_names)
+                special_characters=True, feature_names=X_train.columns, class_names=class_names)
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 graph.write_png(str(result_dir / "decision_tree.png"))
 
