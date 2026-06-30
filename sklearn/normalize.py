@@ -6,7 +6,8 @@ df = pd.read_csv('filled_data.csv').drop(columns=['Student_ID'])
 
 df['Gender'] = df['Gender'].map({
     'Male': 0,
-    'Female': 1
+    'Female': 1,
+    'Other': 2
 })
 
 df['Part_Time_Job'] = df['Part_Time_Job'].map({
