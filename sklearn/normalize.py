@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import joblib
+
 
 df = pd.read_csv('filled_data.csv').drop(columns=['Student_ID'])
 
@@ -48,3 +50,4 @@ df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
 
 df.to_csv('normalized_data.csv', index=False)
 print("Data normalization completed and saved to 'normalized_data.csv'.")
+joblib.dump(scaler, 'models/scaler.pkl')

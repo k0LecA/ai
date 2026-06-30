@@ -49,7 +49,9 @@ import warnings
 warnings.filterwarnings("ignore",category=FutureWarning)
 #update on sklearn 1.11 ^^^
 
+# other imports
 import time
+import joblib
 
 # Paths and files
 models_dir = Path("models")
@@ -107,6 +109,9 @@ plt.tight_layout()
 plt.savefig(result_dir / "logistic_regression_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
 
+#save model
+joblib.dump(logreg, models_dir / "logistic_regression_model.pkl")
+
 
 ## Decision Tree
 dec = DecisionTreeClassifier(random_state=89, max_depth=5)
@@ -152,6 +157,9 @@ export_graphviz(dec, out_file=dot_data,
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 graph.write_png(str(result_dir / "decision_tree.png"))
 
+#save model
+joblib.dump(dec, models_dir / "decision_tree_model.pkl")
+
 
 ## Random Forest
 rf=RandomForestClassifier(random_state=89, max_depth=5)
@@ -189,6 +197,8 @@ plt.tight_layout()
 plt.savefig(result_dir / "random_forest_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
 
+#save model
+joblib.dump(rf, models_dir / "random_forest_model.pkl")
 
 ## Support Vector Machine (SVM)
 svm_model = svm.SVC(kernel='linear', probability=True, random_state=89)
@@ -225,6 +235,9 @@ axes[1].set_xlabel('Predicted label')
 plt.tight_layout()
 plt.savefig(result_dir / "svm_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
+
+#save model
+joblib.dump(svm_model, models_dir / "svm_model.pkl")
 
 
 
@@ -264,3 +277,8 @@ axes[1].set_xlabel('Predicted label')
 plt.tight_layout()
 plt.savefig(result_dir / "mlp_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
+
+#save model
+joblib.dump(mlp, models_dir / "mlp_model.pkl")
+
+print("All models trained, evaluated, and saved successfully.")
