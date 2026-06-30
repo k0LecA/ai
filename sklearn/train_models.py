@@ -49,6 +49,8 @@ import warnings
 warnings.filterwarnings("ignore",category=FutureWarning)
 #update on sklearn 1.11 ^^^
 
+import time
+
 # Paths and files
 models_dir = Path("models")
 models_dir.mkdir(exist_ok=True)
@@ -72,16 +74,23 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 
 ## Logistic Regression
 logreg = LogisticRegression(random_state=89, max_iter=1000)
+start_time = time.time()
 logreg.fit(X_train, y_train)
+end_time = time.time()
 y_logreg_pred = logreg.predict(X_test)
+
+print("Logistic Regression")
+print(f"Training time: {end_time - start_time:.4f} seconds")
 
 #accuracy
 acc = accuracy_score(y_test, y_logreg_pred)
-print("Logistic Regression Accuracy:", acc)
+print("Accuracy:", acc)
 #Precision, Recall, F1-score
 report = metrics.classification_report(y_test, y_logreg_pred)
+print("Classification Report:\n", report)
 #confusion matrix
 cnf_matrix = metrics.confusion_matrix(y_test, y_logreg_pred)
+print("Confusion Matrix:\n", cnf_matrix)
 
 #visualize results
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -101,16 +110,23 @@ plt.clf()
 
 ## Decision Tree
 dec = DecisionTreeClassifier(random_state=89, max_depth=5)
+start_time = time.time()
 dec.fit(X_train, y_train)
+end_time = time.time()
 y_dec_pred = dec.predict(X_test)
+
+print("Decision Tree")
+print(f"Training time: {end_time - start_time:.4f} seconds")
 
 #accuracy
 acc = accuracy_score(y_test, y_dec_pred)
 print("Decision Tree Accuracy:", acc)
 #Precision, Recall, F1-score
 report = metrics.classification_report(y_test, y_dec_pred)
+print("Classification Report:\n", report)
 #confusion matrix
 cnf_matrix = metrics.confusion_matrix(y_test, y_dec_pred)
+print("Confusion Matrix:\n", cnf_matrix)
 
 
 #visualize results
@@ -139,17 +155,23 @@ graph.write_png(str(result_dir / "decision_tree.png"))
 
 ## Random Forest
 rf=RandomForestClassifier(random_state=89, max_depth=5)
+start_time = time.time()
 rf.fit(X_train, y_train)
-
+end_time = time.time()
 y_rf_pred = rf.predict(X_test)
+
+print("Random Forest")
+print(f"Training time: {end_time - start_time:.4f} seconds")
 
 #accuracy
 acc = accuracy_score(y_test, y_rf_pred)
 print("Random Forest Accuracy:", acc)
 #Precision, Recall, F1-score
 report = metrics.classification_report(y_test, y_rf_pred)
+print("Classification Report:\n", report)
 #confusion matrix
 cnf_matrix = metrics.confusion_matrix(y_test, y_rf_pred)
+print("Confusion Matrix:\n", cnf_matrix)
 
 
 #visualize results
@@ -168,17 +190,25 @@ plt.savefig(result_dir / "random_forest_results.png", dpi=150, bbox_inches="tigh
 plt.clf()
 
 
+## Support Vector Machine (SVM)
 svm_model = svm.SVC(kernel='linear', probability=True, random_state=89)
+start_time = time.time()
 svm_model.fit(X_train, y_train)
+end_time = time.time()
 y_svm_pred = svm_model.predict(X_test)
+
+print("Support Vector Machine (SVM)")
+print(f"Training time: {end_time - start_time:.4f} seconds")
 
 #accuracy
 acc = accuracy_score(y_test, y_svm_pred)
 print("Support Vector Machine (SVM) Accuracy:", acc)
 #Precision, Recall, F1-score
 report = metrics.classification_report(y_test, y_svm_pred)
+print("Classification Report:\n", report)
 #confusion matrix
 cnf_matrix = metrics.confusion_matrix(y_test, y_svm_pred)
+print("Confusion Matrix:\n", cnf_matrix)
 
 
 #visualize results
@@ -200,19 +230,24 @@ plt.clf()
 
 ## Neural Network MLP
 
-
-
 mlp = MLPClassifier(hidden_layer_sizes=(64,32), max_iter=1000, random_state=89)
+start_time = time.time()
 mlp.fit(X_train, y_train)
+end_time = time.time()
 y_mlp_pred = mlp.predict(X_test)
+
+print("Neural Network MLP")
+print(f"Training time: {end_time - start_time:.4f} seconds")
 
 #accuracy
 acc = accuracy_score(y_test, y_mlp_pred)
 print("Neural Network MLP Accuracy:", acc)
 #Precision, Recall, F1-score
 report = metrics.classification_report(y_test, y_mlp_pred)
+print("Classification Report:\n", report)
 #confusion matrix
 cnf_matrix = metrics.confusion_matrix(y_test, y_mlp_pred)
+print("Confusion Matrix:\n", cnf_matrix)
 
 
 #visualize results
