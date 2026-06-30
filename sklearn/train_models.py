@@ -111,3 +111,52 @@ plt.title('Confusion matrix', y=1.1)
 plt.ylabel('Actual label')
 plt.xlabel('Predicted label')
 plt.savefig("cnf_decision_tree.png", dpi=150, bbox_inches="tight")
+
+
+##Random Forest Classifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, ConfusionMatrixDisplay
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
+from scipy.stats import randint
+
+# Tree Visualisation
+from sklearn.tree import export_graphviz
+from IPython.display import Image
+
+
+rf=RandomForestClassifier(random_state=89, max_depth=5)
+rf.fit(X_train, y_train['Performance_Category'])
+
+y_pred_rf = rf.predict(X_test)
+
+accuracy = accuracy_score(y_test['Performance_Category'], y_pred_rf)
+print("Random Forest Classifier Accuracy:", accuracy)
+
+
+
+##Support Vector Machine (SVM)
+from sklearn import svm
+
+import warnings
+warnings.filterwarnings("ignore",category=FutureWarning)
+#update on sklearn 1.11
+
+svm_model = svm.SVC(kernel='linear', probability=True, random_state=89)
+svm_model.fit(X_train, y_train['Performance_Category'])
+y_pred_svm = svm_model.predict(X_test)
+accuracy_svm = accuracy_score(y_test['Performance_Category'], y_pred_svm)
+print("Support Vector Machine (SVM) Accuracy:", accuracy_svm)
+
+## Neural Network MLP
+from sklearn.neural_network import MLPClassifier
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+
+mlp = MLPClassifier(hidden_layer_sizes=(64,32), max_iter=1000, random_state=89)
+mlp.fit(X_train, y_train['Performance_Category'])
+y_pred_mlp = mlp.predict(X_test)
+accuracy_mlp = accuracy_score(y_test['Performance_Category'], y_pred_mlp)
+print("Neural Network MLP Accuracy:", accuracy_mlp)
