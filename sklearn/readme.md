@@ -55,3 +55,10 @@ decision tree
 random forest
 support vector machine
 neural network (MLP)
+
+with Productivity_Score in X
+Logistic Regression Accuracy: 0.9968
+Decision Tree Classifier Accuracy: 1.0
+Random Forest Classifier Accuracy: 0.9992
+Support Vector Machine (SVM) Accuracy: 0.9956
+Neural Network MLP Accuracy: 0.9744
