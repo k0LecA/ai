@@ -104,6 +104,14 @@ plt.tight_layout()
 plt.savefig(result_dir / "logistic_regression_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
 
+#save results to text file
+with open(result_dir / "logistic_regression_results.txt", "w") as f:
+    f.write("Logistic Regression\n")
+    f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Accuracy: {acc}\n")
+    f.write(f"Classification Report:\n{report}\n")
+    f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
+
 #save model
 joblib.dump(logreg, models_dir / "logistic_regression_model.pkl")
 
@@ -152,6 +160,14 @@ export_graphviz(dec, out_file=dot_data,
 graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 graph.write_png(str(result_dir / "decision_tree.png"))
 
+#save results to text file
+with open(result_dir / "decision_tree_results.txt", "w") as f:
+    f.write("Decision Tree\n")
+    f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Accuracy: {acc}\n")
+    f.write(f"Classification Report:\n{report}\n")
+    f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
+
 #save model
 joblib.dump(dec, models_dir / "decision_tree_model.pkl")
 
@@ -192,6 +208,14 @@ plt.tight_layout()
 plt.savefig(result_dir / "random_forest_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
 
+#save results to text file
+with open(result_dir / "random_forest_results.txt", "w") as f:
+    f.write("Random Forest\n")
+    f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Accuracy: {acc}\n")
+    f.write(f"Classification Report:\n{report}\n")
+    f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
+
 #save model
 joblib.dump(rf, models_dir / "random_forest_model.pkl")
 
@@ -230,6 +254,14 @@ axes[1].set_xlabel('Predicted label')
 plt.tight_layout()
 plt.savefig(result_dir / "svm_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
+
+#save results to text file
+with open(result_dir / "svm_results.txt", "w") as f:
+    f.write("Support Vector Machine (SVM)\n")
+    f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Accuracy: {acc}\n")
+    f.write(f"Classification Report:\n{report}\n")
+    f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
 joblib.dump(svm_model, models_dir / "svm_model.pkl")
@@ -272,6 +304,14 @@ axes[1].set_xlabel('Predicted label')
 plt.tight_layout()
 plt.savefig(result_dir / "mlp_results.png", dpi=150, bbox_inches="tight")
 plt.clf()
+
+#save results to text file
+with open(result_dir / "mlp_results.txt", "w") as f:
+    f.write("Neural Network MLP\n")
+    f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Accuracy: {acc}\n")
+    f.write(f"Classification Report:\n{report}\n")
+    f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
 joblib.dump(mlp, models_dir / "mlp_model.pkl")

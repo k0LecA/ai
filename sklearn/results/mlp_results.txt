@@ -1,0 +1,18 @@
+Neural Network MLP
+Training time: 10.5332 seconds
+Accuracy: 0.6904
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.71      0.67      0.69       625
+           1       0.69      0.70      0.70      1250
+           2       0.67      0.69      0.68       625
+
+    accuracy                           0.69      2500
+   macro avg       0.69      0.69      0.69      2500
+weighted avg       0.69      0.69      0.69      2500
+
+Confusion Matrix:
+[[416 206   3]
+ [165 881 204]
+ [  2 194 429]]

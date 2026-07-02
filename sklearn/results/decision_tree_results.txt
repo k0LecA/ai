@@ -1,0 +1,18 @@
+Decision Tree
+Training time: 0.0238 seconds
+Accuracy: 0.5472
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.63      0.35      0.45       625
+           1       0.54      0.78      0.64      1250
+           2       0.50      0.28      0.36       625
+
+    accuracy                           0.55      2500
+   macro avg       0.56      0.47      0.48      2500
+weighted avg       0.55      0.55      0.52      2500
+
+Confusion Matrix:
+[[221 385  19]
+ [122 970 158]
+ [  6 442 177]]
