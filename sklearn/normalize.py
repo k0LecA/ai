@@ -10,7 +10,7 @@ models_dir.mkdir(exist_ok=True)
 
 df = pd.read_csv('filled_data.csv').drop(columns=['Student_ID'])
 
-df['Gender'] = df['Gender'].map({'Male': 0, 'Female': 1, 'Other': 2})
+df = pd.get_dummies(df, columns=['Gender'], prefix='Gender', drop_first=True, dtype=int)
 df['Part_Time_Job'] = df['Part_Time_Job'].map({'No': 0, 'Yes': 1})
 df['Internet_Quality'] = df['Internet_Quality'].map({'Poor': 0, 'Average': 1, 'Good': 2})
 df['Performance_Category'] = df['Performance_Category'].map({'Low': 0, 'Medium': 1, 'High': 2})
