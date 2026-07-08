@@ -1,0 +1,33 @@
+EMAIL CLASSIFICATION RESULTS (SPAM / HAM)
+
+Model: Logistic Regression
+Features: TF-IDF (English stop words removed, max 5000 features)
+Train samples: 3878
+Test samples: 1293
+Training time: 0.0417 sec
+
+Accuracy: 98.61%
+
+Classification report:
+              precision    recall  f1-score   support
+
+         Ham       0.99      0.99      0.99       918
+        Spam       0.97      0.98      0.98       375
+
+    accuracy                           0.99      1293
+   macro avg       0.98      0.98      0.98      1293
+weighted avg       0.99      0.99      0.99      1293
+
+
+Confusion matrix:
+[[908  10]
+ [  8 367]]
+True negatives (Ham correct): 908
+False positives (Ham marked as Spam): 10
+False negatives (Spam marked as Ham): 8
+True positives (Spam correct): 367
+
+Analysis:
+The model reached 98.61% accuracy on the test set.
+Only 10 ham email(s) were wrongly marked as spam, and only 8 spam email(s) were missed.
+Low false positives matter most here, since a real email getting blocked is worse than a spam email getting through.
