@@ -1,11 +1,12 @@
 Logistic Regression
-Training time: 0.0304 seconds
+Training time: 18.1375 seconds
+Best parameters: {'C': np.float64(0.17369876223100905), 'class_weight': None, 'l1_ratio': 0.0, 'penalty': 'elasticnet', 'solver': 'saga'}
 Accuracy: 0.724
 Classification Report:
               precision    recall  f1-score   support
 
-           0       0.78      0.64      0.70       625
-           1       0.69      0.80      0.74      1250
+           0       0.79      0.64      0.70       625
+           1       0.69      0.81      0.75      1250
            2       0.75      0.65      0.70       625
 
     accuracy                           0.72      2500
@@ -13,6 +14,6 @@ Classification Report:
 weighted avg       0.73      0.72      0.72      2500
 
 Confusion Matrix:
-[[ 399  225    1]
- [ 112 1003  135]
- [   0  217  408]]
+[[ 398  226    1]
+ [ 109 1007  134]
+ [   0  220  405]]

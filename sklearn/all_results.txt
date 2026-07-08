@@ -1,0 +1,214 @@
+================================================================================
+                          BASELINE MODELS PERFORMANCE
+================================================================================
+
+--------------------------------------------------------------------------------
+Decision Tree
+Training time: 0.0238 seconds
+Accuracy: 0.5472
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.63      0.35      0.45       625
+           1       0.54      0.78      0.64      1250
+           2       0.50      0.28      0.36       625
+
+    accuracy                           0.55      2500
+   macro avg       0.56      0.47      0.48      2500
+weighted avg       0.55      0.55      0.52      2500
+
+Confusion Matrix:
+[[221 385  19]
+ [122 970 158]
+ [  6 442 177]]
+
+--------------------------------------------------------------------------------
+Logistic Regression
+Training time: 0.0352 seconds
+Accuracy: 0.724
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.78      0.64      0.70       625
+           1       0.69      0.80      0.74      1250
+           2       0.75      0.65      0.70       625
+
+    accuracy                           0.72      2500
+   macro avg       0.74      0.70      0.71      2500
+weighted avg       0.73      0.72      0.72      2500
+
+Confusion Matrix:
+[[ 399  225    1]
+ [ 112 1003  135]
+ [   0  217  408]]
+
+--------------------------------------------------------------------------------
+Random Forest
+Training time: 0.4888 seconds
+Accuracy: 0.586
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.81      0.28      0.42       625
+           1       0.55      0.95      0.70      1250
+           2       0.84      0.16      0.27       625
+
+    accuracy                           0.59      2500
+   macro avg       0.73      0.46      0.46      2500
+weighted avg       0.69      0.59      0.52      2500
+
+Confusion Matrix:
+[[ 175  450    0]
+ [  41 1190   19]
+ [   0  525  100]]
+
+--------------------------------------------------------------------------------
+Support Vector Machine (SVM)
+Training time: 9.0194 seconds
+Accuracy: 0.7232
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.79      0.63      0.70       625
+           1       0.69      0.81      0.74      1250
+           2       0.75      0.65      0.70       625
+
+    accuracy                           0.72      2500
+   macro avg       0.74      0.70      0.71      2500
+weighted avg       0.73      0.72      0.72      2500
+
+Confusion Matrix:
+[[ 392  232    1]
+ [ 105 1008  137]
+ [   0  217  408]]
+
+--------------------------------------------------------------------------------
+Neural Network MLP
+Training time: 10.5332 seconds
+Accuracy: 0.6904
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.71      0.67      0.69       625
+           1       0.69      0.70      0.70      1250
+           2       0.67      0.69      0.68       625
+
+    accuracy                           0.69      2500
+   macro avg       0.69      0.69      0.69      2500
+weighted avg       0.69      0.69      0.69      2500
+
+Confusion Matrix:
+[[416 206   3]
+ [165 881 204]
+ [  2 194 429]]
+
+
+================================================================================
+                          FINE-TUNED MODELS PERFORMANCE
+================================================================================
+
+--------------------------------------------------------------------------------
+Decision Tree
+Training time: 2.1378 seconds
+Best parameters: {'criterion': 'gini', 'max_depth': 19, 'min_samples_leaf': 14, 'min_samples_split': 16}
+Accuracy: 0.574
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.59      0.52      0.55       625
+           1       0.58      0.65      0.61      1250
+           2       0.55      0.47      0.51       625
+
+    accuracy                           0.57      2500
+   macro avg       0.57      0.55      0.56      2500
+weighted avg       0.57      0.57      0.57      2500
+
+Confusion Matrix:
+[[326 279  20]
+ [213 813 224]
+ [ 13 316 296]]
+
+--------------------------------------------------------------------------------
+Logistic Regression
+Training time: 18.1375 seconds
+Best parameters: {'C': np.float64(0.17369876223100905), 'class_weight': None, 'l1_ratio': 0.0, 'penalty': 'elasticnet', 'solver': 'saga'}
+Accuracy: 0.724
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.79      0.64      0.70       625
+           1       0.69      0.81      0.75      1250
+           2       0.75      0.65      0.70       625
+
+    accuracy                           0.72      2500
+   macro avg       0.74      0.70      0.71      2500
+weighted avg       0.73      0.72      0.72      2500
+
+Confusion Matrix:
+[[ 398  226    1]
+ [ 109 1007  134]
+ [   0  220  405]]
+
+--------------------------------------------------------------------------------
+Random Forest
+Training time: 23.0602 seconds
+Best parameters: {'criterion': 'entropy', 'max_depth': 16, 'min_samples_leaf': 2, 'min_samples_split': 11, 'n_estimators': 118}
+Accuracy: 0.6892
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.83      0.50      0.63       625
+           1       0.64      0.88      0.74      1250
+           2       0.79      0.49      0.60       625
+
+    accuracy                           0.69      2500
+   macro avg       0.75      0.62      0.66      2500
+weighted avg       0.72      0.69      0.68      2500
+
+Confusion Matrix:
+[[ 315  310    0]
+ [  66 1103   81]
+ [   0  320  305]]
+
+--------------------------------------------------------------------------------
+Support Vector Machine (SVM)
+Training time: 48.1602 seconds
+Best parameters: {'C': np.float64(0.30927822206085687), 'kernel': 'rbf'}
+Accuracy: 0.7416
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.82      0.63      0.71       625
+           1       0.70      0.85      0.77      1250
+           2       0.79      0.64      0.71       625
+
+    accuracy                           0.74      2500
+   macro avg       0.77      0.71      0.73      2500
+weighted avg       0.75      0.74      0.74      2500
+
+Confusion Matrix:
+[[ 396  229    0]
+ [  87 1059  104]
+ [   0  226  399]]
+
+--------------------------------------------------------------------------------
+Neural Network MLP
+Training time: 208.9027 seconds
+Best parameters: {'alpha': np.float64(0.00048029980115927385), 'hidden_layer_sizes': (100,), 'learning_rate_init': np.float64(0.00015987196250392166)}
+Accuracy: 0.7364
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.80      0.70      0.75       625
+           1       0.72      0.78      0.75      1250
+           2       0.72      0.68      0.70       625
+
+    accuracy                           0.74      2500
+   macro avg       0.75      0.72      0.73      2500
+weighted avg       0.74      0.74      0.74      2500
+
+Confusion Matrix:
+[[440 183   2]
+ [113 973 164]
+ [  0 197 428]]
+

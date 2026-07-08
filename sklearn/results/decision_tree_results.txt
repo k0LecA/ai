@@ -1,5 +1,5 @@
 Decision Tree
-Training time: 0.0238 seconds
+Training time: 0.0304 seconds
 Accuracy: 0.5472
 Classification Report:
               precision    recall  f1-score   support

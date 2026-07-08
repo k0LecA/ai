@@ -43,7 +43,7 @@ from io import StringIO
 import pydotplus
 
 # Random search utilities
-from scipy.stats import randint
+from scipy.stats import randint, loguniform
 
 import warnings
 warnings.filterwarnings("ignore",category=FutureWarning)
@@ -54,9 +54,9 @@ import time
 import joblib
 
 # Paths and files
-models_dir = Path("models")
+models_dir = Path("models_tuned")
 models_dir.mkdir(exist_ok=True)
-result_dir = Path("results")
+result_dir = Path("results_tuned")
 result_dir.mkdir(exist_ok=True)
 
 # Target variable
@@ -70,14 +70,27 @@ y_test = pd.read_csv('y_test.csv').squeeze()
 
 
 ## Logistic Regression
-logreg = LogisticRegression(random_state=89, max_iter=1000)
+param_dist = {
+    'C': loguniform(1e-3, 1e2),
+    'solver': ['saga'],
+    'penalty': ['elasticnet'],
+    'l1_ratio': [0.0, 0.5, 1.0],
+    'class_weight': [None, 'balanced']
+}
+logreg = LogisticRegression(random_state=89, max_iter=2000)
+search = RandomizedSearchCV(
+    logreg, param_dist, n_iter=50, cv=5,
+    scoring='f1_macro', random_state=89, n_jobs=-1
+)
 start_time = time.time()
-logreg.fit(X_train, y_train)
+search.fit(X_train, y_train)
 end_time = time.time()
-y_logreg_pred = logreg.predict(X_test)
+best_logreg = search.best_estimator_
+y_logreg_pred = best_logreg.predict(X_test)
 
 print("Logistic Regression")
 print(f"Training time: {end_time - start_time:.4f} seconds")
+print("Best parameters:", search.best_params_)
 
 #accuracy
 acc = accuracy_score(y_test, y_logreg_pred)
@@ -91,7 +104,7 @@ print("Confusion Matrix:\n", cnf_matrix)
 
 #visualize results
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\n\n{report}", fontsize=10, family='monospace')
+axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\nBest Params: {search.best_params_}\n\n{report}", fontsize=10, family='monospace')
 axes[0].axis('off')
 tick_marks = np.arange(len(class_names))
 sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu", fmt='g',
@@ -108,23 +121,36 @@ plt.clf()
 with open(result_dir / "logistic_regression_results.txt", "w") as f:
     f.write("Logistic Regression\n")
     f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Best parameters: {search.best_params_}\n")
     f.write(f"Accuracy: {acc}\n")
     f.write(f"Classification Report:\n{report}\n")
     f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
-joblib.dump(logreg, models_dir / "logistic_regression_model.pkl")
+joblib.dump(best_logreg, models_dir / "logistic_regression_model.pkl")
 
 
 ## Decision Tree
-dec = DecisionTreeClassifier(random_state=89, max_depth=5)
+param_dist = {
+    'criterion': ['gini', 'entropy'],
+    'max_depth': randint(3, 20),
+    'min_samples_split': randint(2, 20),
+    'min_samples_leaf': randint(1, 20)
+}
+dec = DecisionTreeClassifier(random_state=89)
+search = RandomizedSearchCV(
+    dec, param_dist, n_iter=50, cv=5,
+    scoring='f1_macro', random_state=89, n_jobs=-1
+)
 start_time = time.time()
-dec.fit(X_train, y_train)
+search.fit(X_train, y_train)
 end_time = time.time()
-y_dec_pred = dec.predict(X_test)
+best_dec = search.best_estimator_
+y_dec_pred = best_dec.predict(X_test)
 
 print("Decision Tree")
 print(f"Training time: {end_time - start_time:.4f} seconds")
+print("Best parameters:", search.best_params_)
 
 #accuracy
 acc = accuracy_score(y_test, y_dec_pred)
@@ -139,7 +165,7 @@ print("Confusion Matrix:\n", cnf_matrix)
 
 #visualize results
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\n\n{report}", fontsize=10, family='monospace')
+axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\nBest Params: {search.best_params_}\n\n{report}", fontsize=10, family='monospace')
 axes[0].axis('off')
 tick_marks = np.arange(len(class_names))
 sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu", fmt='g',
@@ -155,7 +181,7 @@ plt.clf()
 #visualize the decision tree
 try:
     dot_data = StringIO()
-    export_graphviz(dec, out_file=dot_data,
+    export_graphviz(best_dec, out_file=dot_data,
                     filled=True, rounded=True,
                     special_characters=True, feature_names=X_train.columns, class_names=class_names)
     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
@@ -167,23 +193,37 @@ except Exception as e:
 with open(result_dir / "decision_tree_results.txt", "w") as f:
     f.write("Decision Tree\n")
     f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Best parameters: {search.best_params_}\n")
     f.write(f"Accuracy: {acc}\n")
     f.write(f"Classification Report:\n{report}\n")
     f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
-joblib.dump(dec, models_dir / "decision_tree_model.pkl")
+joblib.dump(best_dec, models_dir / "decision_tree_model.pkl")
 
 
 ## Random Forest
-rf=RandomForestClassifier(random_state=89, max_depth=5)
+param_dist = {
+    'n_estimators': randint(50, 200),
+    'criterion': ['gini', 'entropy'],
+    'max_depth': randint(3, 20),
+    'min_samples_split': randint(2, 20),
+    'min_samples_leaf': randint(1, 20)
+}
+rf = RandomForestClassifier(random_state=89)
+search = RandomizedSearchCV(
+    rf, param_dist, n_iter=30, cv=5,
+    scoring='f1_macro', random_state=89, n_jobs=-1
+)
 start_time = time.time()
-rf.fit(X_train, y_train)
+search.fit(X_train, y_train)
 end_time = time.time()
-y_rf_pred = rf.predict(X_test)
+best_rf = search.best_estimator_
+y_rf_pred = best_rf.predict(X_test)
 
 print("Random Forest")
 print(f"Training time: {end_time - start_time:.4f} seconds")
+print("Best parameters:", search.best_params_)
 
 #accuracy
 acc = accuracy_score(y_test, y_rf_pred)
@@ -198,7 +238,7 @@ print("Confusion Matrix:\n", cnf_matrix)
 
 #visualize results
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\n\n{report}", fontsize=10, family='monospace')
+axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\nBest Params: {search.best_params_}\n\n{report}", fontsize=10, family='monospace')
 axes[0].axis('off')
 tick_marks = np.arange(len(class_names))
 sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu", fmt='g',
@@ -215,22 +255,33 @@ plt.clf()
 with open(result_dir / "random_forest_results.txt", "w") as f:
     f.write("Random Forest\n")
     f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Best parameters: {search.best_params_}\n")
     f.write(f"Accuracy: {acc}\n")
     f.write(f"Classification Report:\n{report}\n")
     f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
-joblib.dump(rf, models_dir / "random_forest_model.pkl")
+joblib.dump(best_rf, models_dir / "random_forest_model.pkl")
 
 ## Support Vector Machine (SVM)
-svm_model = svm.SVC(kernel='linear', probability=True, random_state=89)
+param_dist = {
+    'C': loguniform(1e-2, 1e2),
+    'kernel': ['linear', 'rbf']
+}
+svm_model = svm.SVC(probability=True, random_state=89)
+search = RandomizedSearchCV(
+    svm_model, param_dist, n_iter=15, cv=3,
+    scoring='f1_macro', random_state=89, n_jobs=-1
+)
 start_time = time.time()
-svm_model.fit(X_train, y_train)
+search.fit(X_train, y_train)
 end_time = time.time()
-y_svm_pred = svm_model.predict(X_test)
+best_svm = search.best_estimator_
+y_svm_pred = best_svm.predict(X_test)
 
 print("Support Vector Machine (SVM)")
 print(f"Training time: {end_time - start_time:.4f} seconds")
+print("Best parameters:", search.best_params_)
 
 #accuracy
 acc = accuracy_score(y_test, y_svm_pred)
@@ -245,7 +296,7 @@ print("Confusion Matrix:\n", cnf_matrix)
 
 #visualize results
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\n\n{report}", fontsize=10, family='monospace')
+axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\nBest Params: {search.best_params_}\n\n{report}", fontsize=10, family='monospace')
 axes[0].axis('off')
 tick_marks = np.arange(len(class_names))
 sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu", fmt='g',
@@ -262,25 +313,36 @@ plt.clf()
 with open(result_dir / "svm_results.txt", "w") as f:
     f.write("Support Vector Machine (SVM)\n")
     f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Best parameters: {search.best_params_}\n")
     f.write(f"Accuracy: {acc}\n")
     f.write(f"Classification Report:\n{report}\n")
     f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
-joblib.dump(svm_model, models_dir / "svm_model.pkl")
+joblib.dump(best_svm, models_dir / "svm_model.pkl")
 
 
 
 ## Neural Network MLP
-
-mlp = MLPClassifier(hidden_layer_sizes=(64,32), max_iter=1000, random_state=89)
+param_dist = {
+    'hidden_layer_sizes': [(64, 32), (128, 64), (100,), (50, 50)],
+    'alpha': loguniform(1e-5, 1e-1),
+    'learning_rate_init': loguniform(1e-4, 1e-2)
+}
+mlp = MLPClassifier(max_iter=3000, random_state=89)
+search = RandomizedSearchCV(
+    mlp, param_dist, n_iter=15, cv=3,
+    scoring='f1_macro', random_state=89, n_jobs=-1
+)
 start_time = time.time()
-mlp.fit(X_train, y_train)
+search.fit(X_train, y_train)
 end_time = time.time()
-y_mlp_pred = mlp.predict(X_test)
+best_mlp = search.best_estimator_
+y_mlp_pred = best_mlp.predict(X_test)
 
 print("Neural Network MLP")
 print(f"Training time: {end_time - start_time:.4f} seconds")
+print("Best parameters:", search.best_params_)
 
 #accuracy
 acc = accuracy_score(y_test, y_mlp_pred)
@@ -295,7 +357,7 @@ print("Confusion Matrix:\n", cnf_matrix)
 
 #visualize results
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\n\n{report}", fontsize=10, family='monospace')
+axes[0].text(0.01, 0.5, f"Accuracy: {acc:.4f}\nBest Params: {search.best_params_}\n\n{report}", fontsize=10, family='monospace')
 axes[0].axis('off')
 tick_marks = np.arange(len(class_names))
 sns.heatmap(pd.DataFrame(cnf_matrix), annot=True, cmap="YlGnBu", fmt='g',
@@ -312,11 +374,12 @@ plt.clf()
 with open(result_dir / "mlp_results.txt", "w") as f:
     f.write("Neural Network MLP\n")
     f.write(f"Training time: {end_time - start_time:.4f} seconds\n")
+    f.write(f"Best parameters: {search.best_params_}\n")
     f.write(f"Accuracy: {acc}\n")
     f.write(f"Classification Report:\n{report}\n")
     f.write(f"Confusion Matrix:\n{cnf_matrix}\n")
 
 #save model
-joblib.dump(mlp, models_dir / "mlp_model.pkl")
+joblib.dump(best_mlp, models_dir / "mlp_model.pkl")
 
 print("All models trained, evaluated, and saved successfully.")

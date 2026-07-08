@@ -1,5 +1,5 @@
 Support Vector Machine (SVM)
-Training time: 9.0194 seconds
+Training time: 8.5553 seconds
 Accuracy: 0.7232
 Classification Report:
               precision    recall  f1-score   support

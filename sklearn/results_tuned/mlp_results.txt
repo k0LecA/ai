@@ -1,0 +1,19 @@
+Neural Network MLP
+Training time: 208.9027 seconds
+Best parameters: {'alpha': np.float64(0.00048029980115927385), 'hidden_layer_sizes': (100,), 'learning_rate_init': np.float64(0.00015987196250392166)}
+Accuracy: 0.7364
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.80      0.70      0.75       625
+           1       0.72      0.78      0.75      1250
+           2       0.72      0.68      0.70       625
+
+    accuracy                           0.74      2500
+   macro avg       0.75      0.72      0.73      2500
+weighted avg       0.74      0.74      0.74      2500
+
+Confusion Matrix:
+[[440 183   2]
+ [113 973 164]
+ [  0 197 428]]

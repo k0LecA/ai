@@ -1,0 +1,19 @@
+Decision Tree
+Training time: 2.1378 seconds
+Best parameters: {'criterion': 'gini', 'max_depth': 19, 'min_samples_leaf': 14, 'min_samples_split': 16}
+Accuracy: 0.574
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.59      0.52      0.55       625
+           1       0.58      0.65      0.61      1250
+           2       0.55      0.47      0.51       625
+
+    accuracy                           0.57      2500
+   macro avg       0.57      0.55      0.56      2500
+weighted avg       0.57      0.57      0.57      2500
+
+Confusion Matrix:
+[[326 279  20]
+ [213 813 224]
+ [ 13 316 296]]

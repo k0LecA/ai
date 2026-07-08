@@ -1,5 +1,5 @@
 Neural Network MLP
-Training time: 10.5332 seconds
+Training time: 10.5294 seconds
 Accuracy: 0.6904
 Classification Report:
               precision    recall  f1-score   support

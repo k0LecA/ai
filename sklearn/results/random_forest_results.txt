@@ -1,5 +1,5 @@
 Random Forest
-Training time: 0.4888 seconds
+Training time: 0.4557 seconds
 Accuracy: 0.586
 Classification Report:
               precision    recall  f1-score   support
